@@ -1,0 +1,77 @@
+---
+title: "Homework 3"
+author: "Ian Liu"
+date: "March 8, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+```{r}
+Df1=read.table("maybe_uniform.txt")
+test1=c(Df1$V1,Df1$V2,Df1$V3,Df1$V4,Df1$V5)
+dist_df1 = ecdf(test1)
+plot(dist_df1)
+a <- runif(100)
+uniform <- ecdf(a)
+plot(uniform)
+1
+#we can see the distribution is similar.
+ks.test(test1,"punif")
+x<-seq(-5, 5, by=0.01)
+fx <- ifelse(x > 0 & x <=0.5, 3/2,
+   ifelse(x > 0.5 & x < 1,  0.5, 0))
+plot(x,fx)
+ks.test(test1,"punif")
+#maybe there's other distribution that fits better.
+```
+
+##question 2
+
+```{r}
+set.seed(1)
+library(readr)
+Df2 <- read_csv("maybe_normal.txt")
+q = rnorm(1000, 26,2)
+p<- seq(0,1, by = 0.001)
+x <- qnorm(p,24,2)
+plot(p,x)
+```
+
+##question 3
+```{r}
+Df31=read.table("maybe_same_1.txt")
+x=c(Df31$V1,Df31$V2,Df31$V3,Df31$V4,Df31$V5)
+Df32=read.table("maybe_same_2.txt")
+y=c(Df32$V1,Df32$V2,Df32$V3,Df32$V4,Df32$V5)
+ks.test(x,y)
+ks.test(x+2,y)
+```
+##Question4
+```{r}
+Df4=readRDS("norm_sample.Rdata")
+Df4_ecdf=ecdf(Df4)
+summary(Df4_ecdf)
+plot.ecdf(Df4)
+us=rnorm(25)
+ks.test(Df4,us)
+```
+##question 5
+```{r}
+#Find a 95for F(4.9) − F(4.3).
+Df51=read.table("faithful.dat",header=TRUE,skip=25,sep="")
+Df52=read.table("fijiquakes.dat",header=T,sep="")
+ mag<-Df52$mag
+par(mfrow=c(2,1))
+hist( mag,main="Earthquake Fiji data")
+u<-ecdf(mag)
+plot(u)
+print(th<-u(4.9)-u(4.3))
+# Estimate a 90 percent confidence interval for the mean waiting time
+ecdf.ksCI(Df51$waiting)
+```
+
+
